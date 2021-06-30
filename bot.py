@@ -176,7 +176,7 @@ def on_message(ws, message):
                     gain = calc_gain(close, bought)
                     if gain >= MINIMUM_GAIN:
                         print("Overbought! Sell! Sell! Sell!")
-                        quantity = (float(TRADE_MONEY_PER_BUY) / float(close)) - 0.1
+                        quantity = last_buy['quantity'] - 0.1
                         
                         order_succeeded = order(
                             "SELL", quantity, TRADE_SYMBOL, close, gain)
@@ -193,7 +193,7 @@ def on_message(ws, message):
                     print("It is oversold, but you already own it, nothing to do.")
                 else:
                     print("Oversold! Buy! Buy! Buy!")
-                    quantity = float(TRADE_MONEY_PER_BUY) / float(close)
+                    quantity = round(float(TRADE_MONEY_PER_BUY) / float(close))
 
                     order_succeeded = order(
                         "BUY", quantity, TRADE_SYMBOL, close)

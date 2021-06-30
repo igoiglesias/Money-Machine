@@ -56,7 +56,7 @@ def get_last_buy(db):
 
 
 def telegram_send(bot_message):
-
+    bot_message = bot_message + f" ({TRADE_SYMBOL})"
     bot_token = config.TELEGRAM_TOKEN
     bot_chatID = config.TELEGRAM_ID
     send_text = 'https://api.telegram.org/bot' + bot_token + \

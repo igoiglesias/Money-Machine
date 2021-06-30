@@ -25,6 +25,7 @@ MACD_START = MACD_SLOW + MACD_SIGNALPEDIOD
 
 TRADE_SYMBOL = config.TRADE_SYMBOL
 TRADE_QUANTITY = config.TRADE_QUANTITY
+TRADE_MONEY_PER_BUY = config.TRADE_MONEY_PER_BUY
 
 MINIMUM_GAIN = config.MINIMUM_GAIN
 
@@ -175,8 +176,10 @@ def on_message(ws, message):
                     gain = calc_gain(close, bought)
                     if gain >= MINIMUM_GAIN:
                         print("Overbought! Sell! Sell! Sell!")
+                        quantity = (float(TRADE_MONEY_PER_BUY) / float(close)) - 0.1
+                        
                         order_succeeded = order(
-                            "SELL", (TRADE_QUANTITY-0.1), TRADE_SYMBOL, close, gain)
+                            "SELL", quantity, TRADE_SYMBOL, close, gain)
                         if order_succeeded:
                             bought = 0
                             in_position = False
@@ -190,8 +193,10 @@ def on_message(ws, message):
                     print("It is oversold, but you already own it, nothing to do.")
                 else:
                     print("Oversold! Buy! Buy! Buy!")
+                    quantity = float(TRADE_MONEY_PER_BUY) / float(close)
+
                     order_succeeded = order(
-                        "BUY", TRADE_QUANTITY, TRADE_SYMBOL, close)
+                        "BUY", quantity, TRADE_SYMBOL, close)
 
                     if order_succeeded:
                         bought = close

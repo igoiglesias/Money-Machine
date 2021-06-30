@@ -148,7 +148,7 @@ def on_message(ws, message):
     close = float(candle['c'])
 
     if is_candle_closed:
-        print("candle closed at {}".format(close))
+        print(f"candle {TRADE_SYMBOL} closed at {close}")
         closes.append(close)
 
         if len(closes) > RSI_PERIOD:
@@ -175,7 +175,7 @@ def on_message(ws, message):
                 if in_position:
                     gain = calc_gain(close, bought)
                     if gain >= MINIMUM_GAIN:
-                        print("Overbought! Sell! Sell! Sell!")
+                        print(f"{TRADE_SYMBOL} Overbought! Sell! Sell! Sell!")
                         quantity = last_buy['quantity'] - 0.1
                         
                         order_succeeded = order(
@@ -184,15 +184,15 @@ def on_message(ws, message):
                             bought = 0
                             in_position = False
                     else:
-                        print("Overbought! But not profitable, nothing to do.")
+                        print(f"{TRADE_SYMBOL} Overbought! But not profitable, nothing to do.")
                 else:
-                    print("It is overbought, but we don't own any. Nothing to do.")
+                    print(f"{TRADE_SYMBOL} It is overbought, but we don't own any. Nothing to do.")
 
             if last_rsi <= RSI_OVERSOLD and (-1 <= last_macdhist <= 1):
                 if in_position:
-                    print("It is oversold, but you already own it, nothing to do.")
+                    print(f"{TRADE_SYMBOL} It is oversold, but you already own it, nothing to do.")
                 else:
-                    print("Oversold! Buy! Buy! Buy!")
+                    print(f"{TRADE_SYMBOL} Oversold! Buy! Buy! Buy!")
                     quantity = round(float(TRADE_MONEY_PER_BUY) / float(close))
 
                     order_succeeded = order(

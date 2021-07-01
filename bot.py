@@ -171,12 +171,12 @@ def on_message(ws, message):
             print("the current RSI is {}, MACD is {}".format(
                 last_rsi, last_macdhist))
 
-            if last_rsi >= RSI_OVERBOUGHT and (-1.5 <= last_macdhist <= 1.5):
+            if last_rsi >= RSI_OVERBOUGHT and (-1.1 <= last_macdhist <= 1.1):
                 if in_position:
                     gain = calc_gain(close, bought)
                     if gain >= MINIMUM_GAIN:
                         print(f"{TRADE_SYMBOL} Overbought! Sell! Sell! Sell!")
-                        quantity = last_buy['quantity'] - 0.1
+                        quantity = last_buy['quantity'] - 0.5
                         
                         order_succeeded = order(
                             "SELL", quantity, TRADE_SYMBOL, close, gain)
@@ -188,7 +188,7 @@ def on_message(ws, message):
                 else:
                     print(f"{TRADE_SYMBOL} It is overbought, but we don't own any. Nothing to do.")
 
-            if last_rsi <= RSI_OVERSOLD and (-1 <= last_macdhist <= 1):
+            if last_rsi <= RSI_OVERSOLD and (-1.1 <= last_macdhist <= 1.1):
                 if in_position:
                     print(f"{TRADE_SYMBOL} It is oversold, but you already own it, nothing to do.")
                 else:
